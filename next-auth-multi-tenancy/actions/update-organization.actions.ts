@@ -2,6 +2,7 @@
 
 import { auth } from "@/config/auth";
 import { prisma } from "@/prisma/client";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -42,8 +43,12 @@ export const updateOrganizationAction = async ({ name }: { name: string }) => {
 		throw new Error("User is not a member of this organization");
 	}
 
-	return await prisma.organization.update({
+	const updatedOrg = await prisma.organization.update({
 		where: { id: organization.id },
 		data: { name },
 	});
+
+	revalidatePath(`/${uniqueOrganizationId}`);
+
+	return updatedOrg;
 };
