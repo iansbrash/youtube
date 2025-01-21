@@ -52,7 +52,7 @@ function matchOrganizationRoute(pathname: string): RouteMatch {
 	// If we get here, it's potentially an organization route
 	return {
 		isOrgRoute: true,
-		uniqueOrganizationId: firstSegment, 
+		uniqueOrganizationId: firstSegment,
 	};
 }
 

@@ -20,7 +20,10 @@ export const updateOrganizationAction = async ({ name }: { name: string }) => {
 	}
 
 	const organization = await prisma.organization.findUnique({
-		where: { uniqueId: uniqueOrganizationId, User_Organization: { some: { user_id: session.user.id } } },
+		where: {
+			uniqueId: uniqueOrganizationId,
+			User_Organization: { some: { user_id: session.user.id } },
+		},
 	});
 
 	if (!organization) {
