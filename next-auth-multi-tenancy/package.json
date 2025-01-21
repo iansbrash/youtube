@@ -7,7 +7,9 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"biome": "npx @biomejs/biome check --write ."
+		"biome": "npx @biomejs/biome check --write .",
+		"docker:build": "docker build -t my-postgres .",
+		"docker:run": "docker run -d --name my-postgres-db -p 5432:5432 my-postgres"
 	},
 	"dependencies": {
 		"@auth/prisma-adapter": "^2.7.4",

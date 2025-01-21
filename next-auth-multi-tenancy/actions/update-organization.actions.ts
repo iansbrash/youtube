@@ -20,27 +20,11 @@ export const updateOrganizationAction = async ({ name }: { name: string }) => {
 	}
 
 	const organization = await prisma.organization.findUnique({
-		where: { uniqueId: uniqueOrganizationId },
+		where: { uniqueId: uniqueOrganizationId, User_Organization: { some: { user_id: session.user.id } } },
 	});
 
 	if (!organization) {
-		redirect("/signin");
-	}
-
-	const userOrganization = await prisma.user_Organization.findUnique({
-		where: {
-			user_id_organization_id: {
-				user_id: session.user.id,
-				organization_id: organization.id,
-			},
-		},
-		include: {
-			organization: true,
-		},
-	});
-
-	if (!userOrganization) {
-		throw new Error("User is not a member of this organization");
+		throw new Error("Organization not found");
 	}
 
 	const updatedOrg = await prisma.organization.update({
