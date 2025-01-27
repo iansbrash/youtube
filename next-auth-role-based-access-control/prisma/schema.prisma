@@ -104,7 +104,7 @@ model User_Organization {
 
   // Add other user-organization specific information here
   // i.e. role
-  // role String @default("member")
+  role String @default("member")
 
   user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   organization Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: NoAction)

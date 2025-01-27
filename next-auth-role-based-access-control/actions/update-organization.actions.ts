@@ -7,35 +7,35 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const updateOrganizationAction = async ({ name }: { name: string }) => {
-	const session = await auth();
+  const session = await auth();
 
-	if (!session?.user?.id) {
-		redirect("/signin");
-	}
+  if (!session?.user?.id) {
+    redirect("/signin");
+  }
 
-	const uniqueOrganizationId = (await headers()).get("x-unique-org-id");
+  const uniqueOrganizationId = (await headers()).get("x-unique-org-id");
 
-	if (!uniqueOrganizationId) {
-		redirect("/signin");
-	}
+  if (!uniqueOrganizationId) {
+    redirect("/signin");
+  }
 
-	const organization = await prisma.organization.findUnique({
-		where: {
-			uniqueId: uniqueOrganizationId,
-			User_Organization: { some: { user_id: session.user.id } },
-		},
-	});
+  const organization = await prisma.organization.findUnique({
+    where: {
+      uniqueId: uniqueOrganizationId,
+      User_Organization: { some: { user_id: session.user.id } },
+    },
+  });
 
-	if (!organization) {
-		throw new Error("Organization not found");
-	}
+  if (!organization) {
+    throw new Error("Organization not found");
+  }
 
-	const updatedOrg = await prisma.organization.update({
-		where: { id: organization.id },
-		data: { name },
-	});
+  const updatedOrg = await prisma.organization.update({
+    where: { id: organization.id },
+    data: { name },
+  });
 
-	revalidatePath(`/${uniqueOrganizationId}`);
+  revalidatePath(`/${uniqueOrganizationId}`);
 
-	return updatedOrg;
+  return updatedOrg;
 };
