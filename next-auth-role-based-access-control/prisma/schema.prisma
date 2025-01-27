@@ -13,8 +13,10 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+
   accounts      Account[]
   sessions      Session[]
+
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
@@ -104,7 +106,7 @@ model User_Organization {
 
   // Add other user-organization specific information here
   // i.e. role
-  role String @default("member")
+  role String @default("USER")
 
   user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   organization Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
