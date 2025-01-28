@@ -1,4 +1,4 @@
-import { RESERVED_PATHS } from "@/middleware";
+import { RESERVED_PATHS } from "@/lib/paths";
 import { prisma } from "@/prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
@@ -26,11 +26,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const org1 = await prisma.organization.create({
         data: {
           owner_user_id: user.id,
-          name: "Org 1",
+          name: "Org 1 (Admin)",
           uniqueId: await generateUniqueOrganizationId("org"),
           User_Organization: {
             create: {
               user_id: user.id,
+              role: "ADMIN",
             },
           },
         },
@@ -39,11 +40,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const org2 = await prisma.organization.create({
         data: {
           owner_user_id: user.id,
-          name: "Org 2",
+          name: "Org 2 (Owner)",
           uniqueId: await generateUniqueOrganizationId("org"),
           User_Organization: {
             create: {
               user_id: user.id,
+              role: "OWNER",
             },
           },
         },

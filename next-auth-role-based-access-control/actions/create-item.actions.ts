@@ -19,6 +19,7 @@ export const createItemAction = async () => {
   });
 
   revalidatePath(`/${organization.uniqueId}`);
+  revalidatePath(`/${organization.uniqueId}/actions`);
 
   return item;
 };
