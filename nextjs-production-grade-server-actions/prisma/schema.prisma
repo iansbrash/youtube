@@ -14,9 +14,6 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  // We added this - not next-auth native
-  role String @default("USER")
-
   accounts      Account[]
   sessions      Session[]
 
@@ -25,6 +22,8 @@ model User {
 
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
+  Organization      Organization[]
+  User_Organization User_Organization[]
 }
 
 model Account {
@@ -83,4 +82,55 @@ model Authenticator {
 }
 
 // Custom models -- not next-auth native
+model Organization {
+  id            String @id @default(cuid())
+  name          String @db.VarChar
+  owner_user_id String
 
+  // i.e. `org-123`
+  // We have a blacklist of names that correspond to specific routes, i.e. /login
+  uniqueId String @unique
+
+  // Put other organization-specific information here
+  // i.e. Stripe payment information, plan, etc
+  plan OrganizationPlan @default(FREE)
+
+  user              User                @relation(fields: [owner_user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User_Organization User_Organization[]
+  ExampleItem       ExampleItem[]
+}
+
+// Many to many relationship between User and Organization
+model User_Organization {
+  user_id         String
+  organization_id String
+
+  // Add other user-organization specific information here
+  // i.e. role
+  role String @default("USER")
+
+  user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  organization Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([user_id, organization_id])
+}
+
+model ExampleItem {
+  id              String @id @default(cuid())
+  name            String
+  organization_id String
+
+  organization Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum OrganizationPlan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum OrganizationRole {
+  USER
+  ADMIN
+  OWNER
+}
