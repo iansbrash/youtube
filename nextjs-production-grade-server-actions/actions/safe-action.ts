@@ -4,19 +4,20 @@ import {
 } from "next-safe-action";
 import { z, ZodError } from "zod";
 import {
-  analyticsMiddleware,
-  authenticationMiddleware,
-  authorizationMiddleware,
-  rateLimitingMiddleware,
-  sentryMiddleware,
-} from "./safe-action-middleware";
-import {
   DATABASE_ERROR_MESSAGE,
   VALIDATION_ERROR_MESSAGE,
 } from "./safe-action-helpers";
 import { Duration } from "@upstash/ratelimit";
 import { Prisma } from "@prisma/client";
 import { genericAuthorizationMiddlewareProps } from "./generic-middleware";
+import { rateLimitingMiddleware } from "./middleware/ratelimit.middleware";
+import {
+  loggingMiddleware,
+  sentryMiddleware,
+} from "./middleware/observability.middleware";
+import { authenticationMiddleware } from "./middleware/authentication.middleware";
+import { analyticsMiddleware } from "./middleware/analytics.middleware";
+import { complexAuthorizationMiddleware } from "./middleware/authorization-complex.middleware";
 
 // To match the redis rate limiter schema.
 const durationSchema = z
@@ -29,8 +30,8 @@ const durationSchema = z
     );
   }, "Duration must be a number followed by a valid unit (ms, s, m, h, d)");
 
+// Base client which has server error handling, and metadata
 export const actionClientWithMeta = createSafeActionClient({
-  // TODO: Check if this runs on the client (so we capture the error via Sentry correctly)
   handleServerError(e) {
     if (e instanceof ZodError) {
       console.error(e.message);
@@ -52,9 +53,6 @@ export const actionClientWithMeta = createSafeActionClient({
   defineMetadataSchema() {
     return z.object({
       name: z.string(),
-
-      // Figure out how this is used (check Midday)
-      // This is used to track events in OpenPanel or Posthog
       track: z
         .object({
           event: z.string(),
@@ -74,18 +72,12 @@ export const actionClientWithMeta = createSafeActionClient({
 
 export const noauthActionClient = actionClientWithMeta
   // Logging
-  .use(async ({ next, clientInput, metadata }) => {
-    const result = await next({ ctx: undefined });
+  .use(loggingMiddleware)
 
-    if (process.env.NEXT_PUBLIC_ENVIRONMENT === "dev") {
-      console.debug({ clientInput }, "Input");
-      console.debug({ result: result.data }, "Result");
-      console.debug({ metadata }, "Metadata");
-    }
-
-    return result;
-  })
+  // Rate limiting
   .use(rateLimitingMiddleware)
+
+  // Observability
   .use(sentryMiddleware);
 
 export const authActionClient = <P extends genericAuthorizationMiddlewareProps>(
@@ -93,22 +85,17 @@ export const authActionClient = <P extends genericAuthorizationMiddlewareProps>(
 ) =>
   actionClientWithMeta
     // Logging
-    .use(async ({ next, clientInput, metadata }) => {
-      const result = await next({ ctx: undefined });
+    .use(loggingMiddleware)
 
-      if (process.env.NEXT_PUBLIC_ENVIRONMENT === "dev") {
-        console.debug({ clientInput }, "Input");
-        console.debug({ result: result.data }, "Result");
-        console.debug({ metadata }, "Metadata");
-      }
-
-      return result;
-    })
     // Rate limiting
     .use(rateLimitingMiddleware)
+
     // Authentication
-    .use(authenticationMiddleware())
-    .use(authorizationMiddleware(props))
+    .use(authenticationMiddleware)
+    .use(complexAuthorizationMiddleware(props))
+
     // Analytics, which depends on auth
     .use(analyticsMiddleware)
+
+    // Observability
     .use(sentryMiddleware);

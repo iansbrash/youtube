@@ -14,6 +14,11 @@ model User {
   emailVerified DateTime?
   image         String?
 
+  // For demonstration purposes for the simple authorization middleware
+  // User_Organization has `role` and Organization has `plan` so this doesn't make sense
+  role OrganizationRole @default(USER)
+  plan OrganizationPlan @default(FREE)
+
   accounts      Account[]
   sessions      Session[]
 
