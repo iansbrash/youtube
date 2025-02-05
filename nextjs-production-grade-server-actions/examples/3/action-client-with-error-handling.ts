@@ -11,10 +11,11 @@ import { ZodError } from "zod";
 
 export const actionClientWithErrorHandling = createSafeActionClient({
   handleServerError(e) {
-    if (e instanceof ZodError) {
-      console.error(e.message);
-      return VALIDATION_ERROR_MESSAGE;
-    } else if (
+    // if (e instanceof ZodError) {
+    //   console.error(e.message);
+    //   return VALIDATION_ERROR_MESSAGE;
+    // } else
+    if (
       e instanceof Prisma.PrismaClientInitializationError ||
       e instanceof Prisma.PrismaClientKnownRequestError ||
       e instanceof Prisma.PrismaClientUnknownRequestError ||

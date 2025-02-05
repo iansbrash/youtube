@@ -20,7 +20,7 @@ export const authMiddlewareExampleAction = actionClientWithMeta
   )
   .schema(authMiddlewareExampleSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const { user } = ctx;
+    const { user, session } = ctx;
 
     // Do some logic. Maybe update the name
     // await prisma.user.update({ ... })

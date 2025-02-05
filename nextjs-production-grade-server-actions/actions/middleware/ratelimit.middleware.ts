@@ -9,8 +9,8 @@ export const rateLimitingMiddleware = createMiddleware<{
 }>().define(async ({ next, metadata }) => {
   const {
     limiter = {
-      // Default to 10 requests per 10 seconds
-      tokens: 10,
+      // Default to 5 requests per 10 seconds
+      tokens: 5,
       window: "10s",
     },
     name,

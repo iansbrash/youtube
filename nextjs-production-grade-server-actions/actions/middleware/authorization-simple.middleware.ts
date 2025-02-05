@@ -4,15 +4,13 @@ import { prisma } from "@/prisma/client";
 import { OrganizationRole } from "@prisma/client";
 import { OrganizationPlan } from "@prisma/client";
 
-export type genericAuthorizationMiddlewareProps = {
+export type simpleAuthorizationMiddlewareProps = {
   plans: OrganizationPlan[] | "ALL";
   roles: OrganizationRole[] | "ALL";
 };
 
-export const simpleAuthorizationMiddleware = <
-  P extends genericAuthorizationMiddlewareProps,
->(
-  props: P,
+export const simpleAuthorizationMiddleware = (
+  props: simpleAuthorizationMiddlewareProps,
 ) =>
   createMiddleware<{
     metadata: { name: string };

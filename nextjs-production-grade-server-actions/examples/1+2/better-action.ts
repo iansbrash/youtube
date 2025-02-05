@@ -4,6 +4,7 @@ import { z } from "zod";
 import { simpleActionClient } from "./action-client";
 import { prisma } from "@/prisma/client";
 import { auth } from "@/config/auth";
+import { revalidatePath } from "next/cache";
 
 const exampleBetterSchema = z.object({
   name: z.string(),
@@ -29,6 +30,10 @@ export const exampleBetterAction = simpleActionClient
         name,
       },
     });
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    revalidatePath("/actions");
 
     return user;
   });

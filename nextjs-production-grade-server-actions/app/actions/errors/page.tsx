@@ -3,10 +3,17 @@
 import { useAction } from "next-safe-action/hooks";
 import { onActionError } from "@/actions/safe-action-helpers";
 import { exampleErroringAction } from "@/examples/3/erroring-action";
+import { toast } from "sonner";
 
 export default function ErrorsPage() {
   const errorAction = useAction(exampleErroringAction, {
     onError: onActionError,
+    // onError: ({ error }) => {
+    //   console.error("error:", error.serverError);
+    //   console.error("validation errors:", error.validationErrors);
+
+    //   toast.error(error.serverError);
+    // },
   });
 
   return (
