@@ -10,7 +10,7 @@ export default function Home() {
   const session = useSession();
 
   const handleLogin = async () => {
-    await signInAction(email);
+    await signInAction({ email });
   };
 
   return (
