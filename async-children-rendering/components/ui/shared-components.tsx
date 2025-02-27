@@ -4,11 +4,11 @@ import { User } from "@prisma/client";
 // A component to display a loading state
 export function LoadingState() {
   return (
-    <div className="animate-pulse p-4 bg-gray-100 rounded-md">
-      <div className="h-8 bg-gray-300 rounded w-3/4 mb-4"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
-      <div className="h-4 bg-gray-300 rounded w-2/3 mb-2"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+    <div className="animate-pulse p-4 bg-gray-800 rounded-md">
+      <div className="h-8 bg-gray-700 rounded w-3/4 mb-4"></div>
+      <div className="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
+      <div className="h-4 bg-gray-700 rounded w-2/3 mb-2"></div>
+      <div className="h-4 bg-gray-700 rounded w-1/3"></div>
     </div>
   );
 }
@@ -16,8 +16,8 @@ export function LoadingState() {
 // A component to display an error state
 export function ErrorState({ error }: { error: Error }) {
   return (
-    <div className="p-4 bg-red-100 text-red-700 rounded-md">
-      <h3 className="font-bold">Error</h3>
+    <div className="p-4 bg-red-900 text-red-100 rounded-md border border-red-700">
+      <h3 className="font-bold text-lg mb-2">Error</h3>
       <p>{error.message}</p>
     </div>
   );
@@ -27,18 +27,23 @@ export function ErrorState({ error }: { error: Error }) {
 export function PostsList({ posts }: { posts: Post[] }) {
   return (
     <div>
-      <h3 className="text-lg font-medium mb-3">Recent Posts</h3>
+      <h3 className="text-lg font-medium mb-3 text-white">Recent Posts</h3>
       {posts.length > 0 ? (
         <ul className="space-y-2">
           {posts.map((post) => (
-            <li key={post.id} className="p-3 bg-gray-50 rounded">
-              <h4 className="font-medium">{post.title}</h4>
-              <p className="text-sm text-gray-600 truncate">{post.content}</p>
+            <li
+              key={post.id}
+              className="p-3 bg-gray-800 rounded border border-gray-700"
+            >
+              <h4 className="font-medium text-white mb-1">{post.title}</h4>
+              <p className="text-sm text-gray-300 truncate">{post.content}</p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No posts yet.</p>
+        <p className="text-gray-400 p-3 bg-gray-800 rounded border border-gray-700">
+          No posts yet.
+        </p>
       )}
     </div>
   );
@@ -48,19 +53,25 @@ export function PostsList({ posts }: { posts: Post[] }) {
 export function AnalyticsDisplay({ analytics }: { analytics: UserAnalytics }) {
   return (
     <div>
-      <h3 className="text-lg font-medium mb-3">Activity Analytics</h3>
-      <div className="p-3 bg-gray-50 rounded">
-        <div className="flex justify-between mb-2">
-          <span>Total Views:</span>
-          <span className="font-medium">{analytics.totalViews}</span>
+      <h3 className="text-lg font-medium mb-3 text-white">
+        Activity Analytics
+      </h3>
+      <div className="p-4 bg-gray-800 rounded border border-gray-700">
+        <div className="flex justify-between mb-3 pb-2 border-b border-gray-700">
+          <span className="text-gray-300">Total Views:</span>
+          <span className="font-medium text-white">{analytics.totalViews}</span>
         </div>
-        <div className="flex justify-between mb-2">
-          <span>Engagement Rate:</span>
-          <span className="font-medium">{analytics.engagementRate}%</span>
+        <div className="flex justify-between mb-3 pb-2 border-b border-gray-700">
+          <span className="text-gray-300">Engagement Rate:</span>
+          <span className="font-medium text-white">
+            {analytics.engagementRate}%
+          </span>
         </div>
         <div className="flex justify-between">
-          <span>Last Active:</span>
-          <span className="font-medium">{analytics.lastActiveDate}</span>
+          <span className="text-gray-300">Last Active:</span>
+          <span className="font-medium text-white">
+            {analytics.lastActiveDate}
+          </span>
         </div>
       </div>
     </div>
@@ -78,10 +89,12 @@ export function UserProfileContent({
   analytics: UserAnalytics;
 }) {
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <div className="border-b pb-4 mb-4">
-        <h2 className="text-xl font-semibold">{user.name}</h2>
-        <p className="text-gray-600">{user.email}</p>
+    <div className="bg-gray-900 shadow-xl rounded-lg p-6 border border-gray-800">
+      <div className="border-b border-gray-700 pb-4 mb-6">
+        <h2 className="text-xl font-semibold text-white mb-1">
+          {user.name || "User"}
+        </h2>
+        <p className="text-gray-400">{user.email}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

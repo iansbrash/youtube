@@ -11,8 +11,10 @@ import {
 
 export default async function WithoutAsyncHocExample() {
   return (
-    <div className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Without Async HOC Example</h1>
+    <div className="p-8 max-w-2xl mx-auto bg-black text-white min-h-screen">
+      <h1 className="text-2xl font-bold mb-6 text-white">
+        Without Async HOC Example
+      </h1>
 
       <Suspense fallback={<LoadingState />}>
         <UserProfileWithPosts />
@@ -52,11 +54,11 @@ async function UserProfileWithPosts() {
       <>
         <UserProfileContent user={user} posts={posts} analytics={analytics} />
 
-        <div className="mt-6 p-3 bg-yellow-50 rounded text-sm">
-          <p className="text-yellow-800 font-medium mb-2">
+        <div className="mt-6 p-4 bg-yellow-900/30 rounded text-sm border border-yellow-800">
+          <p className="text-yellow-300 font-medium mb-2">
             <strong>Without HOC Pattern Issues:</strong>
           </p>
-          <ul className="list-disc ml-5 text-yellow-800">
+          <ul className="list-disc ml-5 text-yellow-300">
             <li>
               Authentication logic is duplicated across components that need it
             </li>

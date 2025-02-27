@@ -9,8 +9,8 @@ import {
 
 export default async function WithAsyncHocExample() {
   return (
-    <div className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="p-8 max-w-2xl mx-auto bg-black text-white min-h-screen">
+      <h1 className="text-2xl font-bold mb-6 text-white">
         Async HOC Example with WithUser
       </h1>
 
@@ -40,11 +40,11 @@ async function UserProfileWithPosts() {
               analytics={analytics}
             />
 
-            <div className="mt-6 p-3 bg-blue-50 rounded text-sm">
-              <p className="text-blue-800 font-medium mb-2">
+            <div className="mt-6 p-4 bg-blue-900/30 rounded text-sm border border-blue-800">
+              <p className="text-blue-300 font-medium mb-2">
                 With HOC Pattern Benefits:
               </p>
-              <ul className="list-disc ml-5 text-blue-800">
+              <ul className="list-disc ml-5 text-blue-300">
                 <li>Authentication logic is abstracted in the HOC</li>
                 <li>Clean separation between auth, data fetching, and UI</li>
                 <li>Reusable authentication across components</li>

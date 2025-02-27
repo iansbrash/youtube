@@ -5,8 +5,8 @@ import { ReactNode } from "react";
 // Component to display the counter value
 export function CounterDisplay({ count }: { count: number }) {
   return (
-    <div className="text-center p-4 bg-gray-100 rounded-md">
-      <span className="text-4xl font-bold">{count}</span>
+    <div className="text-center p-6 bg-gray-800 rounded-md border border-gray-700">
+      <span className="text-5xl font-bold text-white">{count}</span>
     </div>
   );
 }
@@ -20,17 +20,17 @@ export function CounterButtons({
   onDecrement: () => void;
 }) {
   return (
-    <div className="flex justify-center gap-3">
+    <div className="flex justify-center gap-4">
       <button
         onClick={onDecrement}
-        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+        className="px-5 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition shadow-md font-medium"
       >
         Decrement
       </button>
 
       <button
         onClick={onIncrement}
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+        className="px-5 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition shadow-md font-medium"
       >
         Increment
       </button>
@@ -47,14 +47,14 @@ export function CounterPresets({
   const presetValues = [0, 10, 25, 50, 100];
 
   return (
-    <div className="mt-4">
-      <p className="mb-2 text-sm text-gray-600">Set to specific value:</p>
+    <div className="mt-5">
+      <p className="mb-3 text-sm text-gray-300">Set to specific value:</p>
       <div className="flex gap-2">
         {presetValues.map((value) => (
           <button
             key={value}
             onClick={() => onSetValue(value)}
-            className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition"
+            className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition shadow-sm"
           >
             {value}
           </button>
@@ -79,7 +79,7 @@ export function CounterUI({
   children?: ReactNode;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 bg-gray-900 shadow-xl rounded-lg p-6 border border-gray-800">
       <CounterDisplay count={count} />
       <CounterButtons onIncrement={onIncrement} onDecrement={onDecrement} />
       <CounterPresets onSetValue={onSetValue} />
