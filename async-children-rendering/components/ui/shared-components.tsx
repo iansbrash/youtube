@@ -1,3 +1,5 @@
+"use client";
+
 import { Post, UserAnalytics } from "@/lib/user-data";
 import { User } from "@prisma/client";
 
