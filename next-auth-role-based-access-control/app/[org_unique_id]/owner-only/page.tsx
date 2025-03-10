@@ -1,9 +1,10 @@
 import { WithAuth } from "@/lib/with-auth";
+import { prisma } from "@/prisma/client";
 
 export default async function OwnerOnlyPage() {
   return (
     <WithAuth>
-      {({ organization, userOrganization }) => {
+      {async ({ organization, userOrganization }) => {
         if (userOrganization.role !== "OWNER") {
           return (
             <div className="flex flex-col items-center justify-center min-h-[200px]">

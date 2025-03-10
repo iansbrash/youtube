@@ -33,7 +33,7 @@ export default async function OrganizationsPage() {
           >
             <h2 className="text-xl mb-2">{userOrg.organization.name}</h2>
             <Link
-              href={`/${userOrg.organization.uniqueId}`}
+              href={`/${userOrg.organization.uniqueId}/actions`}
               className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               View Organization
