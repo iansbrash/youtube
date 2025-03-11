@@ -48,6 +48,7 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
   const updateName = useAction(updateNameAction, {
     onSuccess: () => {
       toast.success("Name updated successfully!");
+
       // After successful submission, form is no longer dirty
       form.reset(form.getValues());
     },

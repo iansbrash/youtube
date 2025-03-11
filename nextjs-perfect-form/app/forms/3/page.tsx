@@ -3,7 +3,6 @@ import { CombinedForm } from "@/components/examples/form-3/combined";
 import { auth } from "@/config/auth";
 import { prisma } from "@/prisma/client";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 
 async function getFormData() {
   const session = await auth();
@@ -11,9 +10,6 @@ async function getFormData() {
   if (!session?.user) {
     redirect("/");
   }
-
-  // Simulate some delay to show loading state
-  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const user = await prisma.user.findUniqueOrThrow({
     where: { id: session.user.id },
@@ -28,9 +24,7 @@ async function getFormData() {
 export default async function FormPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-8 pb-8">
-      <Suspense fallback={<FormSkeleton />}>
-        <FormContent />
-      </Suspense>
+      <FormContent />
     </div>
   );
 }
@@ -54,31 +48,5 @@ async function FormContent() {
         </div>
       </div>
     </>
-  );
-}
-
-function FormSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-4">
-        <div className="h-4 w-[250px] animate-pulse rounded-md bg-muted" />
-        <div className="space-y-2.5">
-          <div className="h-4 w-[100px] animate-pulse rounded-md bg-muted" />
-          <div className="h-10 w-full animate-pulse rounded-md bg-muted" />
-          <div className="h-4 w-[300px] animate-pulse rounded-md bg-muted" />
-        </div>
-        <div className="h-10 w-[100px] animate-pulse rounded-md bg-muted" />
-      </div>
-
-      <div className="space-y-4">
-        <div className="h-4 w-[250px] animate-pulse rounded-md bg-muted" />
-        <div className="space-y-2.5">
-          <div className="h-4 w-[100px] animate-pulse rounded-md bg-muted" />
-          <div className="h-10 w-full animate-pulse rounded-md bg-muted" />
-          <div className="h-4 w-[300px] animate-pulse rounded-md bg-muted" />
-        </div>
-        <div className="h-10 w-[100px] animate-pulse rounded-md bg-muted" />
-      </div>
-    </div>
   );
 }

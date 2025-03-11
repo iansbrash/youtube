@@ -53,7 +53,9 @@ export function Form2({ defaultValues }: Form3Props) {
               <FormControl>
                 <Input placeholder="Enter your name" {...field} />
               </FormControl>
-              <FormDescription>This is your display name.</FormDescription>
+              <FormDescription>
+                This is your display name - it is currently {defaultValues.name}
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
