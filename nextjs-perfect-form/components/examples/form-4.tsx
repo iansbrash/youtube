@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,9 +41,9 @@ export function Form4({ defaultValues }: Form4Props) {
     onError: onActionError,
   });
 
-  async function onSubmit(values: z.infer<typeof nameSchema>) {
+  const onSubmit: SubmitHandler<z.infer<typeof nameSchema>> = (values) => {
     updateName.execute(values);
-  }
+  };
 
   return (
     <Form {...form}>

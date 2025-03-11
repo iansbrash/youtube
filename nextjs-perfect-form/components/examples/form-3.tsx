@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,9 @@ export function Form3({ defaultValues }: Form3Props) {
     defaultValues,
   });
 
-  async function onSubmit(values: z.infer<typeof nameSchema>) {
+  const onSubmit: SubmitHandler<z.infer<typeof nameSchema>> = async (
+    values,
+  ) => {
     const result = await updateName(values);
 
     if (result.error) {
@@ -37,7 +39,7 @@ export function Form3({ defaultValues }: Form3Props) {
     }
 
     toast.success("Name updated successfully!");
-  }
+  };
 
   return (
     <Form {...form}>

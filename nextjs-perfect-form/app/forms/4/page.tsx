@@ -1,6 +1,7 @@
 import { DirtyForm } from "@/components/examples/form-4/dirty-state";
 import { BaseForm } from "@/components/examples/form-4/base";
 import { ProtectionForm } from "@/components/examples/form-4/protection";
+import { CombinedForm } from "@/components/examples/form-4/combined";
 import { auth } from "@/config/auth";
 import { prisma } from "@/prisma/client";
 import { redirect } from "next/navigation";
@@ -38,6 +39,15 @@ export default async function FormPage() {
           Form with Navigation Protection
         </h2>
         <ProtectionForm defaultValues={defaultValues} />
+      </div>
+
+      <div className="pt-8 border-t">
+        <h2 className="mb-8 text-2xl font-bold">Combined Form</h2>
+        <p className="mb-8 text-muted-foreground">
+          This form combines all the features from above: safe actions, dirty
+          state management, and navigation protection.
+        </p>
+        <CombinedForm defaultValues={defaultValues} />
       </div>
     </div>
   );
