@@ -15,30 +15,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { nameSchema } from "@/actions/schema";
-import { updateName } from "@/actions/forms/form-3";
 import { toast } from "sonner";
+import { useAction } from "next-safe-action/hooks";
+import { updateNameAction } from "@/actions/forms/form-3";
+import { onActionError } from "@/actions/safe-action-helpers";
 
-interface Form3Props {
+interface BaseFormProps {
   defaultValues: z.infer<typeof nameSchema>;
 }
 
-export function Form3({ defaultValues }: Form3Props) {
+export function BaseForm3({ defaultValues }: BaseFormProps) {
   const form = useForm<z.infer<typeof nameSchema>>({
     resolver: zodResolver(nameSchema),
     defaultValues,
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof nameSchema>> = async (
-    values,
-  ) => {
-    const result = await updateName(values);
+  const updateName = useAction(updateNameAction, {
+    onSuccess: () => {
+      toast.success("Name updated successfully!");
+    },
+    onError: onActionError,
+  });
 
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-
-    toast.success("Name updated successfully!");
+  const onSubmit: SubmitHandler<z.infer<typeof nameSchema>> = (values) => {
+    updateName.execute(values);
   };
 
   return (
@@ -58,8 +58,8 @@ export function Form3({ defaultValues }: Form3Props) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Saving..." : "Save name"}
+        <Button type="submit" disabled={updateName.isPending}>
+          {updateName.isPending ? "Saving..." : "Save name"}
         </Button>
       </form>
     </Form>

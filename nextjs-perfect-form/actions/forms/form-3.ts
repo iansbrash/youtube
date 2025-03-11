@@ -1,31 +1,20 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { authActionClient } from "../safe-action";
 import { nameSchema } from "../schema";
 import { prisma } from "@/prisma/client";
-import { z } from "zod";
-import { auth } from "@/config/auth";
+import { revalidatePath } from "next/cache";
 
-export async function updateName(values: z.infer<typeof nameSchema>) {
-  const session = await auth();
-  if (!session?.user) {
-    return { error: "Unauthorized" };
-  }
+export const updateNameAction = authActionClient
+  .schema(nameSchema)
+  .action(async ({ ctx, parsedInput }) => {
+    const { session } = ctx;
+    const { name } = parsedInput;
 
-  const result = nameSchema.safeParse(values);
-  if (!result.success) {
-    return { error: "Invalid input" };
-  }
-
-  try {
     await prisma.user.update({
       where: { id: session.user.id },
-      data: { name: result.data.name },
+      data: { name },
     });
 
-    revalidatePath("/forms/3");
-    return { success: true };
-  } catch (error) {
-    return { error: "Failed to update name" };
-  }
-}
+    revalidatePath("/forms/4");
+  });

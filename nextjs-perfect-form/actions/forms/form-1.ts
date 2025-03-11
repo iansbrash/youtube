@@ -13,17 +13,20 @@ export async function updateName(values: z.infer<typeof nameSchema>) {
   }
 
   const result = nameSchema.safeParse(values);
+
   if (!result.success) {
     return { error: "Invalid input" };
   }
 
   try {
+    // For demo purposes, we're updating a hardcoded user
+    // In a real app, you'd get the user ID from the session
     await prisma.user.update({
       where: { id: session.user.id },
       data: { name: result.data.name },
     });
 
-    revalidatePath("/forms/3");
+    revalidatePath("/forms/2");
     return { success: true };
   } catch (error) {
     return { error: "Failed to update name" };

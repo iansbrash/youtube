@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +17,8 @@ import { Input } from "@/components/ui/input";
 import { nameSchema } from "@/actions/schema";
 import { toast } from "sonner";
 import { useAction } from "next-safe-action/hooks";
-import { updateNameAction } from "@/actions/forms/form-4";
+import { updateNameAction } from "@/actions/forms/form-3";
 import { onActionError } from "@/actions/safe-action-helpers";
-import { useBeforeUnload } from "@/hooks/use-before-unload";
 import { cn } from "@/lib/utils";
 import {
   AlertDialog,
@@ -33,11 +32,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-interface CombinedFormProps {
+interface DirtyFormProps {
   defaultValues: z.infer<typeof nameSchema>;
 }
 
-export function CombinedForm({ defaultValues }: CombinedFormProps) {
+export function DirtyForm({ defaultValues }: DirtyFormProps) {
   const form = useForm<z.infer<typeof nameSchema>>({
     resolver: zodResolver(nameSchema),
     defaultValues,
@@ -49,12 +48,10 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
     onSuccess: () => {
       toast.success("Name updated successfully!");
       // After successful submission, form is no longer dirty
-      form.reset(form.getValues());
+      form.reset(defaultValues);
     },
     onError: onActionError,
   });
-
-  useBeforeUnload({ shouldPreventUnload: isDirty });
 
   function onReset() {
     form.reset(defaultValues);
@@ -74,7 +71,7 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
           )}
         >
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-medium">Combined Form Example</h3>
+            <h3 className="text-lg font-medium">Update Name Form</h3>
             {isDirty && (
               <span className="text-sm text-orange-500">
                 You have unsaved changes
@@ -90,21 +87,16 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                 <FormControl>
                   <Input placeholder="Enter your name" {...field} />
                 </FormControl>
-                <FormDescription>
-                  This form combines all features: safe actions, dirty state
-                  management, and browser-level navigation protection.
-                </FormDescription>
+                <FormDescription>This is your display name.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-
         <div className="flex items-center gap-4">
           <Button type="submit" disabled={updateName.isPending || !isDirty}>
             {updateName.isPending ? "Saving..." : "Save name"}
           </Button>
-
           {isDirty && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
