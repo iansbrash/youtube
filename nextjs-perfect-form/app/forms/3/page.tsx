@@ -5,6 +5,7 @@ import { CombinedForm } from "@/components/examples/form-3/combined";
 import { auth } from "@/config/auth";
 import { prisma } from "@/prisma/client";
 import { redirect } from "next/navigation";
+import { CombinedForm2 } from "@/components/examples/form-3/combined-2";
 
 export default async function FormPage() {
   return (
@@ -67,8 +68,28 @@ async function FormContent() {
           navigation protection.
         </p>
         <div className="mt-4">
-          <CombinedForm defaultValues={defaultValues} />
+          <CombinedForm
+            defaultValues={{
+              name: user.name ?? "",
+              title: "mr",
+              notificationPreference: "email",
+              marketingEmails: false,
+              isPublicProfile: false,
+              birthDate: new Date(),
+              experienceLevel: 50,
+            }}
+          />
         </div>
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold">Form with Better Validation UX</h2>
+        <p className="text-muted-foreground">
+          This form demonstrates improved validation and touched state handling.
+          It shows validation errors only after fields are touched and unsaved
+          changes indicators only after meaningful interaction.
+        </p>
+        <CombinedForm2 defaultValues={{ name: user.name ?? "", title: "mr" }} />
       </div>
     </>
   );
