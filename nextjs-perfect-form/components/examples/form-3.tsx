@@ -55,20 +55,18 @@ import {
 interface CombinedFormProps {
   defaultValues: z.infer<typeof combinedFormSchema>;
 }
+type FormFields = keyof z.infer<typeof combinedFormSchema>;
 
 export function CombinedForm({ defaultValues }: CombinedFormProps) {
   const form = useForm<z.infer<typeof combinedFormSchema>>({
     resolver: zodResolver(combinedFormSchema),
     defaultValues,
     mode: "onTouched",
-    // reValidateMode: "onChange",
   });
 
   const {
     formState: { isDirty, dirtyFields, touchedFields },
   } = form;
-
-  type FormFields = keyof z.infer<typeof combinedFormSchema>;
 
   const updateForm = useAction(updateCombinedFormAction, {
     onSuccess: () => {
@@ -182,6 +180,8 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                             "w-[240px] pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground",
                           )}
+                          onBlur={field.onBlur}
+                          ref={field.ref}
                         >
                           {field.value ? (
                             format(field.value, "PPP")
@@ -264,16 +264,12 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                         min={0}
                         max={100}
                         step={1}
-                        defaultValue={[field.value]}
+                        value={[field.value]}
                         onValueChange={(vals) => {
                           field.onChange(vals[0]);
-
-                          // Will immediately trigger validation error instead of waiting for blur
-                          // This just feels a lot better from UX perspective
-                          form.trigger("experienceLevel");
                         }}
-                        {...field}
-                        value={[field.value]}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
                         className="w-[60%]"
                       />
                       <div className="text-sm text-muted-foreground">
@@ -297,6 +293,8 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
@@ -323,7 +321,12 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                     <FormControl>
                       <Switch
                         checked={field.value}
-                        onCheckedChange={field.onChange}
+                        onCheckedChange={(checked) => {
+                          field.onChange(checked);
+                          field.onBlur();
+                        }}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
                       />
                     </FormControl>
                   </FormItem>
