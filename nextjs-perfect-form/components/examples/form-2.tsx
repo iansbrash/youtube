@@ -18,11 +18,11 @@ import { nameSchema } from "@/actions/schema";
 import { updateName } from "@/actions/forms/form-2";
 import { toast } from "sonner";
 
-interface Form3Props {
+interface Form2Props {
   defaultValues: z.infer<typeof nameSchema>;
 }
 
-export function Form2({ defaultValues }: Form3Props) {
+export function Form2({ defaultValues }: Form2Props) {
   const form = useForm<z.infer<typeof nameSchema>>({
     resolver: zodResolver(nameSchema),
     defaultValues,

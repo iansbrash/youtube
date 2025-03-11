@@ -10,8 +10,6 @@ export function useBeforeUnload({ shouldPreventUnload }: UseBeforeUnloadProps) {
       if (shouldPreventUnload) {
         // Modern browsers
         e.preventDefault();
-        // Required for legacy browser support
-        return (e.returnValue = "");
       }
     };
 

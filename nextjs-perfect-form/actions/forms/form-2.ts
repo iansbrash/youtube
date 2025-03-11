@@ -18,6 +18,8 @@ export async function updateName(values: z.infer<typeof nameSchema>) {
   }
 
   try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     await prisma.user.update({
       where: { id: session.user.id },
       data: { name: result.data.name },

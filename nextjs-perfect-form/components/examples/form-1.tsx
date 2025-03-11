@@ -6,21 +6,17 @@ import { nameSchema } from "@/actions/schema";
 import { updateName } from "@/actions/forms/form-1";
 import { z } from "zod";
 
+type NameSchema = z.infer<typeof nameSchema>;
+
 export function Form1() {
-  const form = useForm<z.infer<typeof nameSchema>>({
+  const form = useForm<NameSchema>({
     resolver: zodResolver(nameSchema),
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof nameSchema>> = async (
-    values,
-  ) => {
-    const result = await updateName(values);
+  const onSubmit: SubmitHandler<NameSchema> = async (values) => {
+    await updateName(values);
 
-    if (result.error) {
-      alert(result.error);
-    } else {
-      alert(`Name updated to ${values.name}`);
-    }
+    alert(`Name updated to ${values.name}`);
   };
 
   return (
