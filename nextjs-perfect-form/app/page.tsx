@@ -1,6 +1,6 @@
 "use client";
 
-import { signInAction } from "@/actions/sign-in.actions";
+import { signInAction } from "@/actions/auth/sign-in.actions";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -10,7 +10,7 @@ export default function Home() {
   const session = useSession();
 
   const handleLogin = async () => {
-    await signInAction( email);
+    await signInAction(email);
   };
 
   return (
