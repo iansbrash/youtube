@@ -19,7 +19,7 @@ export default async function FormPage() {
       <h1 className="mb-8 text-2xl font-bold">
         Server Integration Form Example
       </h1>
-      <Form2 defaultValues={{ name: user?.name ?? "" }} />
+      <Form2 />
     </div>
   );
 }

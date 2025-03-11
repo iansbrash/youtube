@@ -6,14 +6,9 @@ import { nameSchema } from "@/actions/schema";
 import { updateName } from "@/actions/forms/form-2";
 import { z } from "zod";
 
-interface Form2Props {
-  defaultValues: z.infer<typeof nameSchema>;
-}
-
-export function Form2({ defaultValues }: Form2Props) {
+export function Form2() {
   const form = useForm<z.infer<typeof nameSchema>>({
     resolver: zodResolver(nameSchema),
-    defaultValues,
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof nameSchema>> = async (
