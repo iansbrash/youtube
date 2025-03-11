@@ -1,3 +1,5 @@
+"use server";
+
 import { authActionClient } from "../safe-action";
 import { nameSchema } from "../schema";
 import { prisma } from "@/prisma/client";
