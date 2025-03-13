@@ -51,7 +51,12 @@ export function Form2({ defaultValues }: Form2Props) {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your name" {...field} />
+                <Input
+                  placeholder="Enter your name"
+                  {...field}
+                  // {...field} implicitly sets these properties:
+                  // onChange, onBlur, value, ref
+                />
               </FormControl>
               <FormDescription>
                 This is your display name - it is currently {defaultValues.name}

@@ -125,11 +125,6 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      onOpenChange={(open) => {
-                        if (!open) {
-                          form.trigger("title");
-                        }
-                      }}
                     >
                       <FormControl>
                         <SelectTrigger onBlur={field.onBlur} ref={field.ref}>
