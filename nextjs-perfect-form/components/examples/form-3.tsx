@@ -265,7 +265,6 @@ export function CombinedForm({ defaultValues }: CombinedFormProps) {
                         }}
                         onBlur={field.onBlur}
                         ref={field.ref}
-                        className="w-[60%]"
                       />
                       <div className="text-sm text-muted-foreground">
                         Current level: {field.value}%
