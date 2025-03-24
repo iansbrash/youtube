@@ -9,7 +9,7 @@ interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   customProp: string;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ customProp, children, ...props }, ref) => {
     return (
       <button {...props} ref={ref}>

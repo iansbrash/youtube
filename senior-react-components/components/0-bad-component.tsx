@@ -12,7 +12,7 @@ const styles = {
   secondary: "bg-gray-500 text-white",
 };
 
-const BadComponent = (props: BadComponentProps) => {
+export const BadButton = (props: BadComponentProps) => {
   const {
     className,
     variant = "primary",
@@ -25,9 +25,12 @@ const BadComponent = (props: BadComponentProps) => {
   return (
     <button
       className={
-        "w-full" + styles[variant] + className + disabled
-          ? "opacity-50 cursor-not-allowed"
-          : ""
+        "w-full" +
+        " " +
+        styles[variant] +
+        " " +
+        className +
+        (disabled ? "opacity-50 cursor-not-allowed" : "")
       }
       onClick={onClick}
       disabled={disabled}
