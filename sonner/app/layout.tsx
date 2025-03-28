@@ -30,7 +30,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen`}
       >
-        <Toaster />
+        <Toaster visibleToasts={3} position="top-right" />
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

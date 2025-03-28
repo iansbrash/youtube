@@ -48,7 +48,8 @@ export default function MediumPage() {
               <a
                 href="https://www.youtube.com/@iansbrash"
                 className="bg-amber-300 px-1 rounded"
-                target="_blank" rel="noreferrer"
+                target="_blank"
+                rel="noreferrer"
               >
                 Custom JSX Toast!
               </a>
@@ -65,21 +66,6 @@ export default function MediumPage() {
         }
       >
         JSX Toast
-      </Button>
-      <Button
-        variant="outline"
-        onClick={() =>
-          toast("This is a toast!", {
-            description: (
-              <>
-                You can also use <span className="font-bold">JSX</span> in{" "}
-                <span className="font-bold">descriptions</span>
-              </>
-            ),
-          })
-        }
-      >
-        JSX Description
       </Button>
 
       {/* Custom icons */}

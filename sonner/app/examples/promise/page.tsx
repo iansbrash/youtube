@@ -10,6 +10,17 @@ const fetchDataWithError = () =>
     setTimeout(() => reject(new Error("Failed to fetch")), 2000),
   );
 
+// Random outcome function
+const randomOutcome = (data: string) =>
+  new Promise<string>((resolve, reject) => {
+    // 50% chance of success/error
+    if (Math.random() > 0.5) {
+      setTimeout(() => resolve(`Success with: ${data}`), 2000);
+    } else {
+      setTimeout(() => reject(new Error("Random error occurred")), 2000);
+    }
+  });
+
 export default function PromisePage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-4">
@@ -34,13 +45,7 @@ export default function PromisePage() {
           toast.promise(fetchData(), {
             loading: "Processing...",
             success: () => (
-              <div
-                style={{
-                  background: "#22c55e",
-                  color: "white",
-                  padding: "1rem",
-                }}
-              >
+              <div className="text-white px-2 rounded bg-emerald-600">
                 Success! Your data has been loaded
               </div>
             ),
@@ -75,33 +80,29 @@ export default function PromisePage() {
         Error Promise Toast
       </Button>
 
-      {/* Promise toast with custom component */}
+      {/* Random outcome promise toast */}
       <Button
         variant="outline"
         onClick={() =>
-          toast.promise(fetchData(), {
-            loading: (
-              <div className="flex items-center gap-2">
-                <span>⏳</span>
-                <span>Loading your profile...</span>
+          toast.promise(randomOutcome("test-data"), {
+            description: "Processing: test-data",
+            loading: "Processing: test-data",
+            success: (data: string) => (
+              <div className="flex items-center gap-2 text-white px-2 rounded bg-emerald-600">
+                <span>✨</span>
+                <span>{data}</span>
               </div>
             ),
-            success: (
-              <div className="flex items-center gap-2">
-                <span>👤</span>
-                <span>Profile loaded successfully!</span>
-              </div>
-            ),
-            error: (
-              <div className="flex items-center gap-2">
+            error: (error: Error) => (
+              <div className="flex items-center gap-2 text-white px-2 rounded bg-red-600">
                 <span>❌</span>
-                <span>Failed to load profile</span>
+                <span>{error.message}</span>
               </div>
             ),
           })
         }
       >
-        Custom Component Promise Toast
+        Random Outcome Toast
       </Button>
     </div>
   );

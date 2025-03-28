@@ -8,11 +8,9 @@ export default function BasicPage() {
     <div className="min-h-screen flex flex-col items-center justify-center gap-4">
       {/* Basic toast button */}
       <Button
-        onClick={() =>
-          toast("Hello, world!", {
-            description: "Test!",
-          })
-        }
+        onClick={() => {
+          toast("Hello, world!");
+        }}
       >
         Show Basic Toast
       </Button>
