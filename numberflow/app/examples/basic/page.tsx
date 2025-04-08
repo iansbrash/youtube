@@ -16,7 +16,7 @@ const Page: FC<PageProps> = () => {
   return (
     <div className="w-full h-full flex justify-center items-center">
       <div className="flex flex-col items-center gap-4">
-        <NumberFlow className="text-4xl font-black" value={value} />
+        <NumberFlow className="text-6xl font-black" value={value} />
         <button
           onClick={shuffle}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

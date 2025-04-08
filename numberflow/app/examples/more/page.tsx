@@ -7,7 +7,7 @@ interface PageProps {}
 
 const Page: FC<PageProps> = () => {
   const [value, setValue] = useState(123);
-  const [price, setPrice] = useState(99.99);
+  const [price, setPrice] = useState(99.0);
   const [percentage, setPercentage] = useState(0.15);
 
   const shuffle = () => {
@@ -33,8 +33,7 @@ const Page: FC<PageProps> = () => {
           value={price}
           format={{
             style: "currency",
-            currency: "USD",
-            trailingZeroDisplay: "stripIfInteger",
+            currency: "EUR",
           }}
         />
       </div>
