@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { books, Book } from "@/lib/data"; // Adjust path if needed
+import { books } from "@/lib/data"; // Adjust path if needed
 
 export default function BadSearch() {
   const [query, setQuery] = useState("");
@@ -10,16 +10,30 @@ export default function BadSearch() {
     if (!query) {
       return books; // Show all books if query is empty
     }
+
     const lowerCaseQuery = query.toLowerCase();
+
+    const cleanQuery = (text: string) => {
+      return text.replace(/[.,'"\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    };
+
     return books.filter((book) => {
-      const titleMatch = book.title.toLowerCase().includes(lowerCaseQuery);
+      const titleMatch = cleanQuery(book.title)
+        .toLowerCase()
+        .includes(lowerCaseQuery);
+
       const authorFirstNameMatch = book.author.firstName
         .toLowerCase()
         .includes(lowerCaseQuery);
+
       const authorLastNameMatch = book.author.lastName
         .toLowerCase()
         .includes(lowerCaseQuery);
+
       // Very basic check - any match includes the book
+      // Optionally: remove punctuation, implement some keyword matching
+      // This could also be done on the server (i.e. with Prisma)
+      // * await prisma.book.findMany({ where: { firstName: { includes: { query } },... } })
       return titleMatch || authorFirstNameMatch || authorLastNameMatch;
     });
   }, [query]);
