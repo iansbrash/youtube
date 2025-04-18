@@ -1,29 +1,31 @@
-import { PrismaClient, Prisma, OrganizationRole } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function example2() {
-  const userArgs: Prisma.UserCreateArgs = {
-    data: {
-      email: "annotated@example.com",
-      name: "Annotated User",
-      role: OrganizationRole.ADMIN,
-    },
-    select: {
-      id: true,
-      email: true,
-      role: true,
-    },
-  };
+const userData: Prisma.UserCreateArgs["data"] = {
+  email: "annotated@example.com",
+};
 
+const userArgs: Prisma.UserSelect = {
+  id: true,
+  email: true,
+  role: true,
+};
+
+type UserSelect = Prisma.UserGetPayload<{
+  select: typeof userArgs;
+}>;
+
+async function example2() {
   // Type Checking:
   // 1. Structural errors ARE caught:
   // userArgs.data.emal = "typo@example.com"; // <-- TS Error: Object literal may only specify known properties...
   // userArgs.nonExistentProp = {}; // <-- TS Error
 
-  const email = userArgs.data.email;
+  const email = userData.email;
+  const emailVerified = userData.emailVerified;
 
-  const role = userArgs.data.role;
+  const role = userData.role;
   console.log(`Role: ${role}`);
 
   console.log(
@@ -31,7 +33,13 @@ async function example2() {
     JSON.stringify(userArgs, null, 2),
   );
 
-  const createdUser = await prisma.user.create(userArgs);
+  userArgs.emailVerified = true;
+  // userArgs.emailVerified = false;
+
+  const createdUser = await prisma.user.create({
+    data: userData,
+    select: userArgs,
+  });
 }
 
 example2().catch(console.error);

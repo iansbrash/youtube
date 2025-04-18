@@ -1,6 +1,14 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "./client";
 
+const enhancedUserArgs = {
+  accounts: { select: { provider: true } }, // Select only provider from accounts
+} satisfies Prisma.UserSelect;
+
+type EnhancedUserSelect = Prisma.UserGetPayload<{
+  select: typeof enhancedUserArgs;
+}>;
+
 async function findUserAndEnhance<T extends Prisma.UserSelect>(args: T) {
   const user = await prisma.user.findFirst({
     select: args,
@@ -10,16 +18,21 @@ async function findUserAndEnhance<T extends Prisma.UserSelect>(args: T) {
     return null;
   }
 
+  // Runs some more logic
+  // Fetch from 3rd party API, etc
+  // Accumulate some additional data that needs returning
+
   return { ...user, queryArgs: args };
 }
 
 async function runExamples() {
-  // Example 4.2: Using the enhanced function
-  const enhancedUserArgs = {
-    accounts: { select: { provider: true } }, // Select only provider from accounts
-  } satisfies Prisma.UserSelect;
-
+  const user = await findUserAndEnhance({
+    name: true,
+  });
   const user2 = await findUserAndEnhance(enhancedUserArgs);
+
+  user?.name;
+  // user.accounts;
 
   if (user2) {
     console.log("Enhanced user account provider:", user2.accounts[0]?.provider);
